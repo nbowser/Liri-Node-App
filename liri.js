@@ -1,17 +1,16 @@
-require("dotenv").config();
+var dotenv = require("dotenv").config();
 
-var key = require("./key.js");
+var keys = require("./keys.js");
 
 // NPM Packages
-var twitter = require("twitter");
-var spotify = require("node-spotify-api");
-var request = require("request");
+var Twitter = require("twitter");
+var Spotify = require("node-spotify-api");
+var Request = require("request");
 var fs = require("fs");
-var inquirer = require("inquirer");
 
 // Import key.js file to access keys
-var spotify = new spotify(MediaKeySession.spotify);
-var client = new Twitter(MediaKeySession.twitter);
+var spotify = new Spotify(keys.spotify);
+var client = new Twitter(keys.twitter);
 
 // Variable for the request to the OMDB API with the chosen movie
 // var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy";
@@ -23,21 +22,38 @@ var action = process.argv[2];
 var value = process.argv[3];
 
 // Conditions of user commands used to call functions
-if (action === "my-tweets") {
+// if (action === "my-tweets") {
+//     myTweets();
+// }
+// else if (action === "spotify-this-song") {
+//     spotifySong();
+// }
+
+// else if (action === "movie-this") {
+//     movieThis();
+// }
+
+// else if (action === "do-what-it-says") {
+//     doWhatItSays();
+// }
+
+switch (action) {
+    case "my-tweets":
     myTweets();
-}
-else if (action === "spotify-this-song") {
+    break;
+
+    case "spotify-this-song":
     spotifySong();
-}
+    break;
 
-else if (action === "movie-this") {
+    case "movie-this":
     movieThis();
-}
+    break;
 
-else if (action === "do-what-it-says") {
+    case "do-what-it-says":
     doWhatItSays();
+    break;
 }
-
 
 // Twitter function -----------------------------------------------------
 function myTweets() {
@@ -75,16 +91,16 @@ function spotifySong() {
     };
 
     if (!songTitle) {
-        songTitle = "The Sign Ace of Base"
+        var songTitle = "The Sign Ace of Base"
     };
 
     spotify.search(paramSpot, function(error, response) {
         if (!error) {
-            console.log("Artist: " + response.tracks.items[0].name);
+            console.log("\nArtist: " + response.tracks.items[0].name);
             console.log("Song Title: " + response.tracks.items[0].artists[0].name);
             console.log("Album: " + response.tracks.items[0].album.name);
             console.log("Preview" + response.tracks.items[0].preview_url);
-            console.log();
+            console.log("-\n");
         }
         else {
             console.log("An error on your search has occurred: " + error);
@@ -98,10 +114,10 @@ function movieThis() {
     var movieTitle = value;
     
     if (!movieTitle) {
-        movieTitle = "Mr. Nobody";
+        var movieTitle = "Mr. Nobody";
     };
 
-    request("http://www.omdbapi.com/?t=" + movieTitle + "&y=&plot=full&apikey=trilogy", function(error, response,body) {
+    Request("http://www.omdbapi.com/?t=" + movieTitle + "&y=&plot=full&apikey=trilogy", function(error, response,body) {
         
         if (!error && response.statusCode === 200) {
             
