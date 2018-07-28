@@ -58,7 +58,7 @@ switch (action) {
 // Twitter function -----------------------------------------------------
 function myTweets() {
     // Twitter username
-    var name = "Liri";
+    var name = "LIRI34795256";
     
     var paramTweet = {
         screen_name: name,
@@ -83,25 +83,25 @@ function myTweets() {
 
 // Spotify function -------------------------------------------------
 function spotifySong() {
-    var songTitle = value;
+    var song = value;
+   
+    if (song === undefined) {
+        var song = "The Sign Ace of Base";
+    };
 
     var paramSpot = {
         type: "track",
-        query: songTitle
-    };
-
-    if (!songTitle) {
-        var songTitle = "The Sign Ace of Base"
-    };
+        query: song
+    }; 
 
     spotify.search(paramSpot, function(error, response) {
         if (!error) {
-            console.log("\nArtist: " + response.tracks.items[0].name);
+            console.log("Artist: " + response.tracks.items[0].name);
             console.log("Song Title: " + response.tracks.items[0].artists[0].name);
             console.log("Album: " + response.tracks.items[0].album.name);
             console.log("Preview" + response.tracks.items[0].preview_url);
-            console.log("-\n");
-        }
+            //console.log("-----------------------------------------------------------");
+       }
         else {
             console.log("An error on your search has occurred: " + error);
         }
@@ -111,18 +111,22 @@ function spotifySong() {
 
 // OMDB function -------------------------------------------------
 function movieThis() {
+
     var movieTitle = value;
+      // var movieTitle;
     
-    if (!movieTitle) {
+    if (movieTitle === undefined) {
         var movieTitle = "Mr. Nobody";
-    };
+    // } else {
+    //    var movieTitle = value;
+     };
 
     Request("http://www.omdbapi.com/?t=" + movieTitle + "&y=&plot=full&apikey=trilogy", function(error, response,body) {
         
         if (!error && response.statusCode === 200) {
             
             console.log("Title: " + JSON.parse(body).Title);
-            console.log("Year: " + JSON.parse(body).year);
+            console.log("Year: " + JSON.parse(body).Year);
             console.log("IMBD Rating: " + JSON.parse(body).Ratings[0].Value);
             console.log("Rotten Tomatoes Rating: " + JSON.parse(body).Ratings[1].Value);
             console.log("Country: " + JSON.parse(body).Country);
@@ -137,16 +141,24 @@ function movieThis() {
 };  // movieThis function end
 
 
+
+
 // Do what it says function ----------------------------------------------
 function doWhatItSays() {
 
-    // Stores the read information into the variable "data"
+//     // Stores the read information into the variable "data"
     fs.readFile("random.txt", "utf8", function(error, data) {
+        
         if (error) {
-            return console.log(error);
+            return console.log("This error has occurred: " + error);
         }
-        // Break the string down by camma separation and the contents into the output array
+        // else {
+        
+        // Break the string down by comma separation and the contents into the output array
         var output = data.split(",");
-    });
-    
-};  // doWhatItSays function end
+    //     spotifySong(output[0], output[1]);
+
+    //     }
+     });
+    //for (var i = 0; i < )
+ };  // doWhatItSays function end
