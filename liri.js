@@ -19,7 +19,8 @@ var client = new Twitter(keys.twitter);
 
 // Variables for user entre
 var action = process.argv[2];
-var value = process.argv[3];
+//var value = process.argv[3];
+var value = process.argv.slice(3).join(" ");
 
 // Conditions of user commands used to call functions
 // if (action === "my-tweets") {
@@ -37,6 +38,8 @@ var value = process.argv[3];
 //     doWhatItSays();
 // }
 
+
+function Swap() {
 switch (action) {
     case "my-tweets":
     myTweets();
@@ -54,12 +57,23 @@ switch (action) {
     doWhatItSays();
     break;
 }
+};
+
 
 // Twitter function -----------------------------------------------------
 function myTweets() {
+
     // Twitter username
-    var name = "LIRI34795256";
-    
+    //var name = "LIRI34795256";
+
+    var name = value;
+    // If no Twitter user name is entered use my account as default response
+    if (name === undefined || !name) {
+       // var name = "LIRI34795256";
+       var name ="realDonaldTrump";
+    };
+
+    // Parameters for search
     var paramTweet = {
         screen_name: name,
         count: 20
@@ -67,45 +81,52 @@ function myTweets() {
 
     // Call the get method on our client variable for Twitter
     client.get("statuses/user_timeline", paramTweet, function(error, data, response) {
+        // Conditionals to print error or response data to terminal
         if (!error) {
             for (var i = 0; i < data.length; i++) {
                 var twitterResults = ("@ " + data[i].user.screen_name + "\n" + data[i].text + "\n" + data[i].created_at + "\n");
                 console.log(twitterResults);
-                console.log("--------------------------------------------");
+                //console.log("--------------------------------------------");
             }
         }
         else {
             console.log("An error on your search has occurred: " + error);
         }
+
     })
+
 };  // myTweets function end
 
 
 // Spotify function -------------------------------------------------
 function spotifySong() {
+
     var song = value;
-   
-    if (song === undefined) {
+    // If no song entered use a default to have a response
+    if (song === undefined || !song) {
         var song = "The Sign Ace of Base";
     };
-
+    // Parameters for search
     var paramSpot = {
         type: "track",
         query: song
     }; 
-
+    // Call the search method to get response data from Spotify
     spotify.search(paramSpot, function(error, response) {
+        // Conditionals to print error or response data to terminal
         if (!error) {
             console.log("Artist: " + response.tracks.items[0].name);
-            console.log("Song Title: " + response.tracks.items[0].artists[0].name);
+            console.log("Song: " + response.tracks.items[0].artists[0].name);            
             console.log("Album: " + response.tracks.items[0].album.name);
             console.log("Preview" + response.tracks.items[0].preview_url);
             //console.log("-----------------------------------------------------------");
-       }
+        }
         else {
             console.log("An error on your search has occurred: " + error);
         }
-    });    
+
+    });
+
 };  // spotifySong function end
 
 
@@ -114,51 +135,54 @@ function movieThis() {
 
     var movieTitle = value;
       // var movieTitle;
-    
-    if (movieTitle === undefined) {
+    // If no movie entered use a default to have a response
+    if (movieTitle === undefined || !movieTitle) {
         var movieTitle = "Mr. Nobody";
     // } else {
     //    var movieTitle = value;
      };
-
-    Request("http://www.omdbapi.com/?t=" + movieTitle + "&y=&plot=full&apikey=trilogy", function(error, response,body) {
-        
-        if (!error && response.statusCode === 200) {
-            
+     // Requesting movie data from omdb API
+    Request("http://www.omdbapi.com/?t=" + movieTitle + "&y=&plot=full&tomatoes=true&r=json&apikey=trilogy", function(error, response,body) {
+        // Conditionals to print error or response data to terminal
+        if (!error && response.statusCode === 200) {            
             console.log("Title: " + JSON.parse(body).Title);
             console.log("Year: " + JSON.parse(body).Year);
             console.log("IMBD Rating: " + JSON.parse(body).Ratings[0].Value);
-            console.log("Rotten Tomatoes Rating: " + JSON.parse(body).Ratings[1].Value);
+            console.log("Rotten Tomatoes Rating: " + JSON.parse(body).tomatoRating);
             console.log("Country: " + JSON.parse(body).Country);
             console.log("Language: " + JSON.parse(body).Language);
             console.log("Plot: " + JSON.parse(body).Plot);
-            console.log("Actors" + JSON.parse(body).Actors);
+            console.log("Actors" + JSON.parse(body).Actors);   
         }
         else {
             console.log("An error on your search has occurred: " + error);
         }
+
     });
+
 };  // movieThis function end
 
 
-
-
 // Do what it says function ----------------------------------------------
-function doWhatItSays() {
+function doWhatItSays(){
+	// Read data and collect text from Random.txt file
+	fs.readFile("random.txt", "utf8", function(error, data) {
+        // Conditionals to print error to terminal or else
+	    if(error){
+     	    console.log(error);
+         }
+         else {
+     	// Split the data to use in spotifySong function
+     	var dataArr = data.split(',');
+        action = dataArr[0];
+        value = dataArr[1];      
+        };
 
-//     // Stores the read information into the variable "data"
-    fs.readFile("random.txt", "utf8", function(error, data) {
-        
-        if (error) {
-            return console.log("This error has occurred: " + error);
-        }
-        // else {
-        
-        // Break the string down by comma separation and the contents into the output array
-        var output = data.split(",");
-    //     spotifySong(output[0], output[1]);
+        // Run this function
+		Swap();
 
-    //     }
-     });
-    //for (var i = 0; i < )
- };  // doWhatItSays function end
+    });
+
+};// doWhatItSays function end
+
+Swap();
