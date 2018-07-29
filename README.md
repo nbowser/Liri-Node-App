@@ -21,9 +21,9 @@ Prepare your access keys and install the needed Node packages.
 At the prompt type: &nbsp; node liri.js &nbsp;**commands** &nbsp;**names**
 <br><br>
 
-Commands:&nbsp; |&nbsp;&nbsp; Names:
---------- | ----------
-1. my-tweets&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp;enter your Twitter @name
-2. spotify-this-song&nbsp; | &nbsp;&nbsp;&nbsp;enter a song title
-3. movie-this&nbsp;  | &nbsp;&nbsp;&nbsp;&nbsp;enter a movie title
-4. do-what-it-says&nbsp; |
+Commands:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Names:
+---------------------------------------------------
+1. my-tweets&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enter your Twitter @name
+2. spotify-this-song&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enter a song title
+3. movie-this&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enter a movie title
+4. do-what-it-says
